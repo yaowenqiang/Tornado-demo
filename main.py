@@ -1,5 +1,6 @@
 import tornado.ioloop
 import tornado.web
+from pymongo import Connection
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -8,6 +9,12 @@ class MainHandler(tornado.web.RequestHandler):
 
     def post(self):
         self.set_header('Content-Type:', 'text/plain')
+        con = Connection()
+        db = con.post
+        post = db.post
+        message = self.get_argument('messages')
+        data = {"message": message}
+        post.insert(data)
         self.write('You wrote ' + self.get_argument('messages'))
 
 application = tornado.web.Application([
